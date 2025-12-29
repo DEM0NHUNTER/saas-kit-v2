@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  # Main Application Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: saas_postgres
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-admin}
+      POSTGRES_DB: ${POSTGRES_DB:-saas_db}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - saas_network
+    restart: always
+
+  # Caching Layer
+  redis:
+    image: redis:7-alpine
+    container_name: saas_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - saas_network
+    restart: always
+
+volumes:
+  postgres_data:
+
+networks:
+  saas_network:
+    driver: bridge

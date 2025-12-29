@@ -1,0 +1,53 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+  // We stick to the default output to ensure Next.js finds the client automatically
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 1. Enums force data consistency
+enum UserRole {
+  USER
+  ADMIN
+}
+
+// 2. The Core User Model
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  password  String   // In a real app, this would be hashed
+  role      UserRole @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  posts     Post[]
+
+  // Map to "users" table in DB (SQL Convention)
+  @@map("users")
+  // Index for faster login queries
+  @@index([email])
+}
+
+// 3. A Sample Resource
+model Post {
+  id        String   @id @default(uuid())
+  title     String
+  content   String?
+  published Boolean  @default(false)
+  authorId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relation Field
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@map("posts")
+  @@index([authorId])
+}
