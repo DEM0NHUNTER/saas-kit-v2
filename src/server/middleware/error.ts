@@ -29,7 +29,7 @@ export function handleError(err: unknown) {
   }
 
   // 3. Handle Unknown/Crash Errors (Log them!)
-  logger.error('CRITICAL ERROR 💥', { error: err });
+  logger.error('CRITICAL ERROR', { error: err });
 
   // But we send a generic message to the user for security
   return NextResponse.json(

@@ -3,7 +3,7 @@ import winston from 'winston';
 
 const { combine, timestamp, json, colorize, printf } = winston.format;
 
-// Custom format for local development (Human readable)
+// Custom format for local development
 const consoleFormat = printf(({ level, message, timestamp, context }) => {
   return `${timestamp} [${level}] ${context ? `[${context}] ` : ''}${message}`;
 });

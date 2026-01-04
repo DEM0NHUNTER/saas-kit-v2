@@ -4,7 +4,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('🌱 Starting database seed...');
+  console.log('Starting database seed...');
 
   // Create a Dummy Admin User
   const admin = await prisma.user.upsert({
@@ -19,7 +19,7 @@ async function main() {
   });
 
   console.log(`✅ User created: ${admin.email}`);
-  console.log('🌱 Seeding finished.');
+  console.log('Seeding finished.');
 }
 
 main()
